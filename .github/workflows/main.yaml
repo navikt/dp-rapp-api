@@ -2,7 +2,9 @@ name: "Build and deploy dp-rapp-api"
 on:
   push:
     branches:
-    - "main"
+    - "master"
+    workflow_dispatch:
+
 env:
   "IMAGE": "ghcr.io/${{ github.repository }}:${{ github.sha }}"
 jobs:
