@@ -1,4 +1,4 @@
-name: "Build and deploy dp-rapp-api"
+name: "Build and deploy dp-rapp-api to dev"
 on:
   push:
     branches:
