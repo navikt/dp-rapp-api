@@ -39,4 +39,4 @@ spec:
     sqlInstances:
     type: POSTGRES_15
       databases:
-        "name": "dp-rapp-api-db"
+        name: "dp-rapp-api-db"
