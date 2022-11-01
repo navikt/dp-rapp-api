@@ -5,8 +5,6 @@ metadata:
   namespace: "raptus"
   labels:
     "team": "raptus"
-    "start.nais.io/created-by": "Petter Hannevold"
-    "start.nais.io/creationTimestamp": "2022-10-28T07:34:56.189283080"
 spec:
   image: {{image}}
   liveness:
