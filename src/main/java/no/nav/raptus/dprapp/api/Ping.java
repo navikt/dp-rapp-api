@@ -24,4 +24,10 @@ public class Ping {
         logger.error("Test error");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Test Error");
     }
+
+    @GetMapping(path = "/warn")
+    public ResponseEntity<Void> warn() {
+        logger.warn("Test warning");
+        return ResponseEntity.ok().build();
+    }
 }
