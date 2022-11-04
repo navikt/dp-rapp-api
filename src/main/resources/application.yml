@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    url: "${NAIS_DATABASE_MYAPP_MYDB_HOST}:${NAIS_DATABASE_MYAPP_MYDB_PORT}/${NAIS_DATABASE_MYAPP_MYDB_DATABASE}"
+    username: ${NAIS_DATABASE_MYAPP_MYDB_USERNAME}
+    password: ${NAIS_DATABASE_MYAPP_MYDB_PASSWORD}
   flyway:
     enabled: true
     locations: classpath:/db/migration
