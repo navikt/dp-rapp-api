@@ -10,14 +10,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
+
 @RestController
 @RequestMapping("ping")
 public class Ping {
+
+    @Autowired
+    public DataSource dataSource;
 
     private static Logger logger = LoggerFactory.getLogger(Ping.class);
 
     @GetMapping
     public ResponseEntity<String> ping() {
+        try {
+            dataSource.getConnection().commit();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         return ResponseEntity.ok().build();
     }
 
