@@ -10,12 +10,12 @@ spec:
   liveness:
     path: "/ping"
     port: 8080
-    initialDelay: 20
+    initialDelay: 60
     timeout: 60
   readiness:
     path: "/ping"
     port: 8080
-    initialDelay: 20
+    initialDelay: 60
     timeout: 60
   replicas:
     min: 2
