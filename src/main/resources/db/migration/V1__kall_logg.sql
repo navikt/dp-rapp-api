@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------------
--- Tabell            : KALL_LOGG
+-- Tabell            : kall_logg
 -- Beskrivelse       : Loggtabell for API-kall og Kafka hendelser.
 -------------------------------------------------------------------------------
 CREATE TABLE kall_logg
@@ -17,30 +17,21 @@ CREATE TABLE kall_logg
     response       TEXT,
     info           TEXT
 ) PARTITION BY RANGE ((tidspunkt::date));
--- Det er mulig å ha partisjonerte tabeller i PostgreSQL:
--- PARTITION BY RANGE (tidspunkt)
---
--- Men selve partisjonene må opprettes manuelt. Dette er ikke egnet for prod.
--- Men dette er ikke så viktig å ha partisjoner i PosgreSQL siden den brukes kun når appen kjører lokalt
---
 
 -- Indekser
-CREATE INDEX kalo_1 ON kall_logg (path, retning);
-
+CREATE INDEX kalo_1 ON kall_logg (kall_logg_id);
 CREATE INDEX kalo_2 ON kall_logg (korrelasjon_id);
-
-CREATE INDEX kalo_3 ON kall_logg (status);
+CREATE INDEX kalo_3 ON kall_logg (path, retning);
+CREATE INDEX kalo_4 ON kall_logg (status);
 
 -- Constraints
 ALTER TABLE kall_logg
     ADD CONSTRAINT type_ck1 CHECK ( type IN ('REST', 'KAFKA') );
-
 ALTER TABLE kall_logg
     ADD CONSTRAINT kall_retning_ck1 CHECK ( retning IN ('INN', 'UT') );
 
--- Tabell og kolonnekommentarer
+-- Tabell- og kolonnekommentarer
 COMMENT ON TABLE kall_logg IS 'Loggtabell for API-kall og Kafka hendelser.';
-
 COMMENT ON COLUMN kall_logg.kall_logg_id IS 'Autogenerert sekvens';
 COMMENT ON COLUMN kall_logg.korrelasjon_id IS 'Unik ID som kan brukes for å korrelere logginnslag med logging til Kibana.';
 COMMENT ON COLUMN kall_logg.tidspunkt IS 'Tidspunkt for når kallet bli mottatt.';

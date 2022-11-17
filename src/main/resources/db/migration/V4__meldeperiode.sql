@@ -10,6 +10,12 @@ CREATE TABLE meldeperiode
     frist             DATE                      NOT NULL
 );
 
-COMMENT ON COLUMN meldeperiode.meldeperiode_id IS 'primærnøkkel';
-COMMENT ON COLUMN meldeperiode.fom_dato IS 'fra og med dato for meldeperioden';
-COMMENT ON COLUMN meldeperiode.tom_dato IS 'til og med dato for meldeperioden';
+-- Indekser
+CREATE INDEX mepe_1 ON meldeperiode (meldeperiode_id);
+CREATE INDEX mepe_2 ON meldeperiode (fom_dato, tom_dato);
+
+-- Tabell- og kolonnekommentarer
+COMMENT ON TABLE meldeperiode IS 'Kodeverkstabell som inneholder gyldige meldeperioder.';
+COMMENT ON COLUMN meldeperiode.meldeperiode_id IS 'Primærnøkkel';
+COMMENT ON COLUMN meldeperiode.fom_dato IS 'Fra og med dato for meldeperioden';
+COMMENT ON COLUMN meldeperiode.tom_dato IS 'Til og med dato for meldeperioden';
