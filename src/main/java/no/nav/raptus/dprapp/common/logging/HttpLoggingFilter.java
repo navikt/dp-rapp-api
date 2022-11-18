@@ -215,10 +215,9 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
 
     private void saveKallLogg(KallLogg kallLogg) {
         try {
-            // TODO kallLoggRepository.save(kallLogg);
-            Long kallLoggId = Long.valueOf(kallLoggDAO.create(kallLogg));
+            kallLoggDAO.create(kallLogg);
         } catch (Exception e) {
-            log.error("Feil ved logging av API-kalloggdata til databasen. Feilmelding: " + e.getMessage(), e);
+            log.error("Feil ved logging av kalloggdata til databasen for tilbudt tjeneste. Feilmelding: " + e.getMessage(), e);
         }
     }
 }
