@@ -21,7 +21,8 @@ public class KallLoggDAO {
     @Autowired
     DataSource dataSource;
 
-    public String create(KallLogg kallLogg) {
+    public void create(KallLogg kallLogg) {
+        //TODO Finn ut hvordan man kan få tak i kall_logg_id
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         try {
@@ -29,7 +30,6 @@ public class KallLoggDAO {
 
             String insertStatement = "INSERT INTO kall_logg " +
                     "( korrelasjon_id" +
-                    //", tidspunkt" +
                     ", type" +
                     ", retning" +
                     ", metode" +
@@ -41,7 +41,6 @@ public class KallLoggDAO {
                     ", info ) " +
                     "VALUES " +
                     "( :korrelasjonId" +
-                    //", :tidspunkt" +
                     ", :type" +
                     ", :retning" +
                     ", :metode" +
@@ -55,7 +54,6 @@ public class KallLoggDAO {
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
 
             mapSqlParameterSource.addValue("korrelasjonId", kallLogg.getKorrelasjonId(), Types.VARCHAR);
-            //mapSqlParameterSource.addValue("tidspunkt", kallLogg.getTidspunkt(), Types.TIMESTAMP);
             mapSqlParameterSource.addValue("type", kallLogg.getType(), Types.VARCHAR);
             mapSqlParameterSource.addValue("retning", kallLogg.getRetning(), Types.VARCHAR);
             mapSqlParameterSource.addValue("metode", kallLogg.getMetode(), Types.VARCHAR);
@@ -70,6 +68,5 @@ public class KallLoggDAO {
         } catch (Exception e) {
             log.warn("Feil ved opprettelse av kall_logg: " + e.getMessage(), e);
         }
-        return keyHolder.getKey().toString();
     }
 }

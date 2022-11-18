@@ -175,7 +175,7 @@ public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
         try {
             kallLoggDAO.create(kallLogg);
         } catch (Exception e) {
-            log.error("Feil ved logging av kalloggdata til databasen. Feilmelding: " + e.getMessage(), e);
+            log.error("Feil ved logging av kalloggdata til databasen for konsumert tjeneste. Feilmelding: " + e.getMessage(), e);
         }
     }
 }
