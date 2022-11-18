@@ -21,7 +21,7 @@ public class HttpLoggingConfig {
     public FilterRegistrationBean<MdcFilter> mdcFilterRegistrationBean() {
         FilterRegistrationBean<MdcFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new MdcFilter());
-        registrationBean.addUrlPatterns("/*");
+        registrationBean.addUrlPatterns("/api/*");
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
         return registrationBean;
     }
@@ -30,7 +30,7 @@ public class HttpLoggingConfig {
     public FilterRegistrationBean<HttpLoggingFilter> httpLoggingFilterRegistrationBean(KallLoggDAO kallLoggDAO) {
         FilterRegistrationBean<HttpLoggingFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new HttpLoggingFilter(kallLoggDAO));
-        registrationBean.addUrlPatterns("/*");
+        registrationBean.addUrlPatterns("/api/*");
         registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE + 1);
         return registrationBean;
     }
