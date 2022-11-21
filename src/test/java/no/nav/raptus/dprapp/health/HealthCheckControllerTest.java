@@ -27,8 +27,8 @@ public class HealthCheckControllerTest {
 
     @Test
     public void isReadyShouldSucceed() throws Exception {
-        mockMvc.perform(get("/internal/isready") //
-                        .accept(MediaType.ALL_VALUE)) //
+        mockMvc.perform(get("/internal/isready")
+                        .accept(MediaType.ALL_VALUE))
                 .andExpect(status().isOk());
     }
 }

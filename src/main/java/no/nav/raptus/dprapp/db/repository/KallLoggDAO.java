@@ -2,8 +2,6 @@ package no.nav.raptus.dprapp.db.repository;
 
 import lombok.extern.slf4j.Slf4j;
 import no.nav.raptus.dprapp.db.entity.KallLogg;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -25,7 +23,6 @@ public class KallLoggDAO {
     public void pingKallLogg() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.execute("SELECT 1 FROM kall_logg WHERE kall_logg_id = 0");
-        log.info("Ping mot kall_logg utført.");
     }
 
     public void create(KallLogg kallLogg) {

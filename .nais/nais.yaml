@@ -12,11 +12,13 @@ spec:
     port: 8080
     initialDelay: 60
     timeout: 10
+    periodSeconds: 300
   readiness:
     path: "/internal/isready"
     port: 8080
     initialDelay: 60
     timeout: 10
+    periodSeconds: 30
   replicas:
     min: 2
     max: 2
