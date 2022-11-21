@@ -8,15 +8,15 @@ metadata:
 spec:
   image: {{image}}
   liveness:
-    path: "/ping"
+    path: "/internal/isready"
     port: 8080
     initialDelay: 60
-    timeout: 120
+    timeout: 10
   readiness:
-    path: "/ping"
+    path: "/internal/isready"
     port: 8080
     initialDelay: 60
-    timeout: 120
+    timeout: 10
   replicas:
     min: 2
     max: 2
