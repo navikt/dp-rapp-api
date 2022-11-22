@@ -23,7 +23,7 @@ public class KallLoggPartisjonHandteringJobConfig {
         return TriggerBuilder.newTrigger()
                 .forJob(job)
                 .withIdentity(TriggerKey.triggerKey(TRIGGER_NAME))
-                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(15, 16))
+                .withSchedule(CronScheduleBuilder.dailyAtHourAndMinute(4, 50))
                 .build();
     }
 }
