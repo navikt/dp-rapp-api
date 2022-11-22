@@ -28,15 +28,15 @@ public class KallLoggPartisjonHandteringJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
-        log.debug("KallLoggPartisjonHandteringJob: {} startet {}", context.getJobDetail().getKey().getName(), toLocalDateTime(context.getFireTime()));
+        log.info("{} startet {}", context.getJobDetail().getKey().getName(), toLocalDateTime(context.getFireTime()));
 
         kallLoggPartisjonHandterer.handterPartisjoner();
 
         if (context.getNextFireTime() != null) {
-            log.debug("Neste kjøring av {} er planlagt {}", context.getJobDetail().getKey().getName(),
+            log.info("Neste kjøring av {} er planlagt {}", context.getJobDetail().getKey().getName(),
                     toLocalDateTime(context.getNextFireTime()));
         } else {
-            log.debug("Ingen ny kjøring av {} er planlagt.", context.getJobDetail().getKey().getName()); // Kun test
+            log.info("Ingen ny kjøring av {} er planlagt.", context.getJobDetail().getKey().getName()); // Kun test
         }
     }
 
