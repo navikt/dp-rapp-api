@@ -26,6 +26,7 @@ public class KallLoggDAO {
     }
 
     public void create(KallLogg kallLogg) {
+        log.info("Oppretter kall_logg innslag for korrelasjon_id " + kallLogg.getKorrelasjonId());
         //TODO Finn ut hvordan man kan få tak i kall_logg_id
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -69,6 +70,7 @@ public class KallLoggDAO {
             mapSqlParameterSource.addValue("info", kallLogg.getInfo(), Types.VARCHAR);
             namedParameterJdbcTemplate.update(insertStatement, mapSqlParameterSource, keyHolder);
 
+            log.info("Ferdig med å opprette kall_logg innslag for korrelasjon_id " + kallLogg.getKorrelasjonId());
         } catch (Exception e) {
             log.warn("Feil ved opprettelse av kall_logg: " + e.getMessage(), e);
         }
