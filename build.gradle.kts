@@ -14,6 +14,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-test:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-quartz:2.7.5")
+    implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.5")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
     implementation("org.flywaydb:flyway-core:9.7.0")
     implementation("org.yaml:snakeyaml:1.33")
