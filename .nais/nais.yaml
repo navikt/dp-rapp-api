@@ -44,4 +44,4 @@ spec:
           - name: "dp-rapp-api-db"
             envVarPrefix: DB
   kafka:
-    pool:{{ kafkaPool }}
+    pool: {{ kafkaPool }}
