@@ -11,7 +11,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-web:2.7.5")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa:2.7.5")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-test:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-quartz:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.5")
@@ -22,6 +22,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.5.0")
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.projectlombok:lombok:1.18.22")
+    implementation("org.springframework.kafka:spring-kafka:2.9.3")
     compileOnly("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 

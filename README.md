@@ -38,6 +38,22 @@ For å kjøre applikasjonen lokalt må database credentials settes opp via milj�
 - DB_PASSWORD: "raptus"
 - DB_DATABASE: "dp-rapp-api-db"
 
+I tillegg må man også sette opp credentials for Kafka-lytteren. Det enkleste her er å bruke køen som er opprettet i dev-gcp:
+- Last først ned credentials-filene til aiven-dev i raptus namespacet: `nais aiven get kafka aiven-dev-secret raptus`
+    - En rekke filer vil bli lastet ned lokalt. Outputen vil fortelle deg hvor de blir lagret til
+    - Kopier filene til dette repoet, i en mappe som heter "secrets". Denne mappen er lag til i .gitignore. Hvis du   
+legger dem et annet sted må du passe på at de ikke blir pushet til github, siden github-repoet vårt er åpent.
+    - Deretter må du sette flere miljøvariabler:
+      - KAFKA_BROKERS=nav-dev-kafka-nav-dev.aivencloud.com:26484
+      - KAFKA_CREDSTORE_PASSWORD=changeme
+      - KAFKA_KEYSTORE_PATH=./secrets/client.keystore.p12
+      - KAFKA_TRUSTSTORE_PATH=./secrets/client.truststore.jks
+      - KAFKA_GROUP_ID=dp-rapp-api-<unikt-navn>
+      - Den siste variabelen, KAFKA_GROUP_ID, defaultes til dp-rapp-api, men siden det er samme gruppe-id som brukes av 
+applikasjonen i dev-gcp må man konkurrere med disse podene for å få meldingene (hvis det i det hele tatt finnes nok 
+kafka-partisjoner for lokal instans å koble seg på). Dersom du benytter en ny, unik gruppe-id applikasjonen konsumere 
+alle meldingene på topicen ved oppstart, men kun nye meldinger ved påfølgende kjøringer.
+
 Om man starter applikasjonen fra kommandolinje settes de via export (eller tilsvarende funksjon i Windows).
 For eksempel ```export DB_HOST=localhost```  
 Deretter kjør følgende kommando mens du står i rot-mappa til prosjektet: ```./gradlew bootRun```
@@ -48,3 +64,4 @@ konfigurerer manuelt må du sette opp følgende:
 - cp: dp-rapp-api.main
 - Main class: no.nav.raptus.dprapp.Main
 - Environment variables: Som over (Hvis du ikke har valget om å sette environment variables må kan det velges via nedtrekkslisten modify options)
+
