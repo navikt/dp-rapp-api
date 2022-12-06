@@ -45,3 +45,9 @@ spec:
             envVarPrefix: DB
   kafka:
     pool: {{ kafkaPool }}
+  accessPolicy:
+    inbound:
+      rules:
+        - application: dp-rapp-frontend-q1
+        - application: dp-rapp-frontend-q2
+        - application: dp-rapp-frontend
