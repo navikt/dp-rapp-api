@@ -51,3 +51,11 @@ spec:
         - application: dp-rapp-frontend-q1
         - application: dp-rapp-frontend-q2
         - application: dp-rapp-frontend
+  idporten:
+    enabled: true
+    sidecar:
+      enabled: true
+      level: Level3
+      locale: nb
+      autoLogin: false
+      errorPath: ""
