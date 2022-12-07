@@ -17,6 +17,11 @@ public class Ping {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(path = "/authenticatedping")
+    public ResponseEntity<String> authenticatedping() {
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping(path = "/ping/error")
     public ResponseEntity<String> error() {
         log.error("Test error");
