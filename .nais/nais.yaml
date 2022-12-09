@@ -45,6 +45,8 @@ spec:
             envVarPrefix: DB
   kafka:
     pool: {{ kafkaPool }}
+  tokenx:
+    enabled: true
   accessPolicy:
     inbound:
       rules:
