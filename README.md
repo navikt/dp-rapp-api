@@ -15,6 +15,9 @@ Interne henvendelser kan sendes via Slack i kanalen #meldekort.
 ## For utviklere
 
 ### Lokal kjøring
+#### Build
+Kjør  
+```./gradlew clean build```
 
 #### Sette opp database
 Den enkleste måten å sette opp en database for lokal kjøring på er å bruke docker-compose prosjektet som er laget for 

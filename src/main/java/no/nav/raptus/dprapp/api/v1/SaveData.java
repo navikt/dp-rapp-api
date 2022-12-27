@@ -35,16 +35,17 @@ class Data {
 
         return String.format(
                 """
-                        {,
-                            questionWork: %s,
-                            questionMeasures: %s,
-                            questionIllness: %s,
-                            questionVacation: %s,
-                            [
-                                %s
-                            ],
-                            questionProceed: %s,
-                        }""",
+                {,
+                    questionWork: %s,
+                    questionMeasures: %s,
+                    questionIllness: %s,
+                    questionVacation: %s,
+                    [
+                        %s
+                    ],
+                    questionProceed: %s,
+                }
+                """,
                 questionWork,
                 questionMeasures,
                 questionIllness,
