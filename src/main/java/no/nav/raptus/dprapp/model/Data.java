@@ -9,6 +9,10 @@ public class Data {
 
     @Getter
     @Setter
+    String id;
+
+    @Getter
+    @Setter
     private Boolean questionWork;
 
     @Getter
@@ -41,6 +45,7 @@ public class Data {
         return String.format(
                 """
                 {
+                    id: %s,
                     questionWork: %s,
                     questionMeasures: %s,
                     questionIllness: %s,
@@ -51,6 +56,7 @@ public class Data {
                     questionProceed: %s,
                 }
                 """,
+                id,
                 questionWork,
                 questionMeasures,
                 questionIllness,
