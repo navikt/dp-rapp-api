@@ -16,3 +16,9 @@ BEGIN
         );
 END;
 $$;
+
+
+-- Ved første kjøring opprett partisjoner for i dag og neste dager
+SELECT opprett_partisjon_kall_logg(CURRENT_DATE);
+SELECT opprett_partisjon_kall_logg(CURRENT_DATE + 1);
+SELECT opprett_partisjon_kall_logg(CURRENT_DATE + 2);

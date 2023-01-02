@@ -10,7 +10,7 @@ CREATE TABLE kall_logg
 (
     kall_logg_id   BIGINT GENERATED ALWAYS AS IDENTITY,
     korrelasjon_id VARCHAR(54)                            NOT NULL,
-    tidspunkt      TIMESTAMP(9) DEFAULT current_timestamp NOT NULL,
+    tidspunkt      TIMESTAMP(6) DEFAULT current_timestamp NOT NULL,
     type           VARCHAR(10)                            NOT NULL,
     retning        VARCHAR(10)                            NOT NULL,
     metode         VARCHAR(10),
@@ -21,6 +21,8 @@ CREATE TABLE kall_logg
     response       TEXT,
     info           TEXT
 ) PARTITION BY RANGE ((tidspunkt::date));
+
+CREATE TABLE kall_logg_1000_01_01 PARTITION OF kall_logg DEFAULT;
 
 -- Indekser
 CREATE INDEX kalo_1 ON kall_logg (kall_logg_id);
@@ -48,49 +50,3 @@ COMMENT ON COLUMN kall_logg.kalltid IS 'Målt tid for utførelse av kallet i mil
 COMMENT ON COLUMN kall_logg.request IS 'Sendt Kafka-hendelse eller REST-kall.';
 COMMENT ON COLUMN kall_logg.response IS 'Komplett HTTP-respons m/ status, headere og responsdata.';
 COMMENT ON COLUMN kall_logg.info IS 'Tilleggsinformasjon til fri bruk. Kan typisk brukes for feilmeldinger, stacktrace eller annet som kan være nyttig å logge.';
-
-CREATE OR REPLACE FUNCTION handter_partisjoner_kall_logg()
-    RETURNS void
-    LANGUAGE plpgsql AS
-$$
-DECLARE
-rec RECORD;
-BEGIN
-    -- Partisjon for i morgen
-EXECUTE opprett_partisjon_kall_logg(CURRENT_DATE+1);
-
--- Slett partisjon som er eldre enn 30 dager
-FOR rec IN
-SELECT right(cast (inhrelid::regclass as text), 10) AS date_in_name
-FROM pg_catalog.pg_inherits
-WHERE inhparent = 'kall_logg'::regclass
-  AND to_date(right (cast (inhrelid::regclass as text), 10), 'YYYY_MM_DD') < CURRENT_DATE - 30
-  AND to_date(right (cast (inhrelid::regclass as text), 10), 'YYYY_MM_DD') > CURRENT_DATE - 1000 -- Ikke slett DEFAULT partisjonen
-    LOOP
-    EXECUTE format(
-    'DROP TABLE IF EXISTS kall_logg_%s',
-    rec.date_in_name
-    );
-END LOOP;
-END;
-$$;
-
-CREATE OR REPLACE FUNCTION opprett_partisjon_kall_logg(fromDate DATE)
-    RETURNS void
-    LANGUAGE plpgsql AS
-$$
-BEGIN
-EXECUTE format(
-        'CREATE TABLE IF NOT EXISTS kall_logg_%s PARTITION OF kall_logg FOR VALUES FROM (%L) TO (%L)',
-        to_char(fromDate, 'YYYY_MM_DD'),
-        to_char(fromDate, 'YYYY-MM-DD'),
-        to_char(fromDate + 1, 'YYYY-MM-DD')
-    );
-END;
-$$;
-
--- Utføres ved første kjøring:
--- Opprett partisjon for i dag
-SELECT opprett_partisjon_kall_logg(CURRENT_DATE);
--- Opprett partisjon for i morgen
-SELECT opprett_partisjon_kall_logg(CURRENT_DATE+1);
