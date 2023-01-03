@@ -18,8 +18,6 @@ END;
 $$;
 
 
-CREATE TABLE kall_logg_1000_01_01 PARTITION OF kall_logg DEFAULT;
-
 -- Ved første kjøring opprett partisjoner for i dag og neste dager
 SELECT opprett_partisjon_kall_logg(CURRENT_DATE);
 SELECT opprett_partisjon_kall_logg(CURRENT_DATE + 1);
