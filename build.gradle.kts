@@ -20,6 +20,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-test:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-quartz:2.7.5")
     implementation("org.springframework.boot:spring-boot-starter-actuator:2.7.5")
+    implementation("org.springframework.boot:spring-boot-starter-validation:2.7.5")
     implementation("io.micrometer:micrometer-registry-prometheus:1.10.1")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
     implementation("org.flywaydb:flyway-core:9.7.0")
@@ -28,6 +29,7 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
     implementation("org.projectlombok:lombok:1.18.22")
     implementation("org.springframework.kafka:spring-kafka:2.9.3")
+    implementation("no.nav.security:token-validation-spring:2.1.8")
     compileOnly("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 

@@ -3,20 +3,25 @@ package no.nav.raptus.dprapp.api.v1;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.raptus.dprapp.db.repository.MellomlagretMeldeperiodeDAO;
 import no.nav.raptus.dprapp.model.Data;
+import no.nav.security.token.support.core.api.Protected;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static no.nav.raptus.dprapp.Konstanter.API_PATH;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
 @Slf4j
+@Protected
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping(API_PATH + "/mellomlagring")
 public class Mellomlagring {
 
     @Autowired
     MellomlagretMeldeperiodeDAO mellomlagretMeldeperiodeDAO;
 
     @PostMapping(path = "/lagre")
-    public ResponseEntity<String> lagre(@RequestBody Data data) {
+    public ResponseEntity<String> lagre(@RequestHeader(AUTHORIZATION) String authString, @RequestBody Data data) {
         // Sjekk at bruker i token "eier" innsendte meldeperiode
 
         // Lagre data
@@ -31,7 +36,7 @@ public class Mellomlagring {
     }
 
     @GetMapping("/hente/{id}")
-    public ResponseEntity<String> hente(@PathVariable long id) {
+    public ResponseEntity<String> hente(@RequestHeader(AUTHORIZATION) String authString, @PathVariable long id) {
         // Sjekk at bruker i token "eier" innsendte meldeperiode
 
         // Hent data

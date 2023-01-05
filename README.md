@@ -69,7 +69,12 @@ alle meldingene på topicen ved oppstart, men kun nye meldinger ved påfølgende
 
 Om man starter applikasjonen fra kommandolinje settes de via export (eller tilsvarende funksjon i Windows).
 For eksempel ```export DB_HOST=localhost```  
-Deretter kjør følgende kommando mens du står i rot-mappa til prosjektet: ```./gradlew bootRun```
+Deretter kjør følgende kommando mens du står i rot-mappa til prosjektet:  
+`./gradlew bootRun`  
+eller  
+`./gradlew bootRun --args='--bypass.ident.check=true --test.ident=01020312345'`
+
+bypass.ident.check=true slår av Security Config
 
 Om du kjører fra Intellij skal Intellij ha satt opp en kjørekonfigurasjon for spring boot for deg, men om du 
 konfigurerer manuelt må du sette opp følgende:
