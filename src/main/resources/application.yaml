@@ -35,3 +35,9 @@ app:
   kafka:
     topic:
       meldepliktperiode: raptus.meldepliktperiode-v1
+
+no.nav.security.jwt:
+  issuer:
+    tokenx:
+      discoveryurl: ${TOKEN_X_WELL_KNOWN_URL}
+      accepted_audience: ${TOKEN_X_CLIENT_ID}
