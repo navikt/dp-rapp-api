@@ -20,6 +20,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,12 +62,19 @@ public class MellomlagringTest {
                 .build();
         byte[] dataBytes = new ObjectMapper().writeValueAsBytes(data);
 
-        mockMvc.perform(post("/api/v1/lagre").contentType(MediaType.APPLICATION_JSON).content(dataBytes))
+        mockMvc.perform(
+                        post("/api/v1/mellomlagring/lagre")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(dataBytes)
+                                .header(AUTHORIZATION, "token")
+                )
                 .andExpect(status().isOk());
         verify(mellomlagretMeldeperiodeDAO).lagre(id, data.toString());
 
         when(mellomlagretMeldeperiodeDAO.hente(id)).thenReturn(data.toString());
-        MvcResult result = mockMvc.perform(get("/api/v1/hente/" + id))
+        MvcResult result = mockMvc.perform(
+                        get("/api/v1/mellomlagring/hente/" + id).header(AUTHORIZATION, "token")
+                )
                 .andExpect(status().isOk())
                 .andReturn();
 
