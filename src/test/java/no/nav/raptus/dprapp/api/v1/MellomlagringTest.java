@@ -34,12 +34,6 @@ public class MellomlagringTest {
     @MockBean
     private MellomlagretMeldeperiodeDAO mellomlagretMeldeperiodeDAO;
 
-    static {
-        System.setProperty("DB_USERNAME", "test");
-        System.setProperty("KAFKA_BROKERS", "kafka.nav.no:26484");
-    }
-
-
     @Test
     public void skalLagreOgHente() throws Exception {
         List<Day> days = new ArrayList<>();

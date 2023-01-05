@@ -21,8 +21,12 @@ public class Mellomlagring {
     MellomlagretMeldeperiodeDAO mellomlagretMeldeperiodeDAO;
 
     @PostMapping(path = "/lagre")
-    public ResponseEntity<String> lagre(@RequestHeader(AUTHORIZATION) String authString, @RequestBody Data data) {
+    public ResponseEntity<String> lagre(
+            @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
+            @RequestBody Data data
+    ) {
         // Sjekk at bruker i token "eier" innsendte meldeperiode
+        log.warn(authorization);
 
         // Lagre data
         try {
@@ -36,8 +40,12 @@ public class Mellomlagring {
     }
 
     @GetMapping("/hente/{id}")
-    public ResponseEntity<String> hente(@RequestHeader(AUTHORIZATION) String authString, @PathVariable long id) {
+    public ResponseEntity<String> hente(
+            @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
+            @PathVariable long id
+    ) {
         // Sjekk at bruker i token "eier" innsendte meldeperiode
+        log.warn(authorization);
 
         // Hent data
         String data = mellomlagretMeldeperiodeDAO.hente(id);
