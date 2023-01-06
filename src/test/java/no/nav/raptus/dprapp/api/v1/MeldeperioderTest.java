@@ -1,7 +1,7 @@
 package no.nav.raptus.dprapp.api.v1;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import no.nav.raptus.dprapp.db.repository.MellomlagretMeldeperiodeDAO;
+import no.nav.raptus.dprapp.db.repository.MeldeperioderDAO;
 import no.nav.raptus.dprapp.model.ActivityType;
 import no.nav.raptus.dprapp.model.Data;
 import no.nav.raptus.dprapp.model.Day;
@@ -25,17 +25,17 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(Mellomlagring.class)
-public class MellomlagringTest {
+@WebMvcTest(Meldeperioder.class)
+public class MeldeperioderTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private MellomlagretMeldeperiodeDAO mellomlagretMeldeperiodeDAO;
+    private MeldeperioderDAO meldeperioderDAO;
 
     @Test
-    public void skalLagreOgHente() throws Exception {
+    public void skalLagreOgHenteMellomlagret() throws Exception {
         List<Day> days = new ArrayList<>();
         days.add(Day.builder().date(LocalDate.of(2022, 12, 5)).type(ActivityType.WORK).hours(1d).build());
         days.add(Day.builder().date(LocalDate.of(2022, 12, 6)).type(ActivityType.WORK).hours(2d).build());
@@ -57,17 +57,17 @@ public class MellomlagringTest {
         byte[] dataBytes = new ObjectMapper().writeValueAsBytes(data);
 
         mockMvc.perform(
-                        post("/api/v1/mellomlagring/lagre")
+                        post("/api/v1/meldeperioder/lagre")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(dataBytes)
                                 .header(AUTHORIZATION, "token")
                 )
                 .andExpect(status().isOk());
-        verify(mellomlagretMeldeperiodeDAO).lagre(id, data.toString());
+        verify(meldeperioderDAO).lagre(id, data.toString());
 
-        when(mellomlagretMeldeperiodeDAO.hente(id)).thenReturn(data.toString());
+        when(meldeperioderDAO.hentMellomlagret(id)).thenReturn(data.toString());
         MvcResult result = mockMvc.perform(
-                        get("/api/v1/mellomlagring/hente/" + id).header(AUTHORIZATION, "token")
+                        get("/api/v1/meldeperioder/mellomlagret/" + id).header(AUTHORIZATION, "token")
                 )
                 .andExpect(status().isOk())
                 .andReturn();
