@@ -38,7 +38,7 @@ NAME                COMMAND                  SERVICE             STATUS         
 postgres-raptus     "docker-entrypoint.s…"   postgres            running (starting)   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp
 ```
 
-#### Kjøre applikasjonen fra Intellij
+#### Kjøre applikasjonen lokalt
 For å kjøre applikasjonen lokalt må database credentials settes opp via miljøvariabler. Disse er som følger:
 - DB_HOST: "localhost"
 - DB_PORT: "5432"
@@ -67,14 +67,31 @@ applikasjonen i dev-gcp må man konkurrere med disse podene for å få meldingen
 kafka-partisjoner for lokal instans å koble seg på). Dersom du benytter en ny, unik gruppe-id applikasjonen konsumere 
 alle meldingene på topicen ved oppstart, men kun nye meldinger ved påfølgende kjøringer.
 
+Dessuten må man slå av sikkerheten og oppgi test FNR:
+- BYPASS_SECURITY=true
+- TEST_IDENT=01020312345
+
 Om man starter applikasjonen fra kommandolinje settes de via export (eller tilsvarende funksjon i Windows).
 For eksempel ```export DB_HOST=localhost```  
 Deretter kjør følgende kommando mens du står i rot-mappa til prosjektet:  
-`./gradlew bootRun`  
-eller  
-`./gradlew bootRun --args='--bypass.ident.check=true --test.ident=01020312345'`
+`./gradlew bootRun`
 
-bypass.ident.check=true slår av Security Config
+Dvs. for å kjøre lokalt:
+```
+export DB_HOST=localhost
+export DB_PORT=5432
+export DB_USERNAME=dp-rapp-api-db-user
+export DB_PASSWORD=raptus
+export DB_DATABASE=dp-rapp-api-db
+export KAFKA_BROKERS=nav-dev-kafka-nav-dev.aivencloud.com:26484
+export KAFKA_CREDSTORE_PASSWORD=changeme
+export KAFKA_KEYSTORE_PATH=./secrets/client.keystore.p12
+export KAFKA_TRUSTSTORE_PATH=./secrets/client.truststore.jks
+export KAFKA_GROUP_ID=dp-rapp-api
+export BYPASS_SECURITY=true
+export TEST_IDENT=01020312345
+./gradlew bootRun
+```
 
 Om du kjører fra Intellij skal Intellij ha satt opp en kjørekonfigurasjon for spring boot for deg, men om du 
 konfigurerer manuelt må du sette opp følgende:

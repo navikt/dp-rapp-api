@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 // Men vi kan ikke sette disse i Swagger sine Controller'e, da bare ignorerer vi disse
 // I tillegg ignorerer vi også Spring Framework sine interne Controller'e (dumt at dette må skrives inn manuelt)
 @ConditionalOnProperty(
-        value= {"bypass.ident.check"},
+        value= {"BYPASS_SECURITY"},
         havingValue = "false",
         matchIfMissing = true
 )

@@ -12,8 +12,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -23,34 +21,22 @@ public class MeldeperioderDAO {
     @Autowired
     DataSource dataSource;
 
-    public List<Meldeperiode> hentListe() {
-        List<Meldeperiode> meldeperioder = new ArrayList<>();
-        meldeperioder.add(
-                Meldeperiode.builder()
-                        .meldeperiodeId(1L)
-                        .fomDato(LocalDate.of(2022, 11, 27))
-                        .tomDato(LocalDate.of(2022, 12, 4))
-                        .frist(LocalDate.of(2022, 12, 5))
-                        .build()
-        );
-        meldeperioder.add(
-                Meldeperiode.builder()
-                        .meldeperiodeId(2L)
-                        .fomDato(LocalDate.of(2022, 12, 5))
-                        .tomDato(LocalDate.of(2022, 12, 18))
-                        .frist(LocalDate.of(2022, 12, 19))
-                        .build()
-        );
-        meldeperioder.add(
-                Meldeperiode.builder()
-                        .meldeperiodeId(3L)
-                        .fomDato(LocalDate.of(2022, 12, 19))
-                        .tomDato(LocalDate.of(2023, 1, 1))
-                        .frist(LocalDate.of(2023, 1, 2))
-                        .build()
-        );
+    public List<Meldeperiode> hentListe(String fnr) {
 
-        return meldeperioder;
+        NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+
+        String selectStatement = "SELECT MP.* " +
+                "FROM MELDEPERIODE MP " +
+                "JOIN RAPPORTERING R ON MP.MELDEPERIODE_ID = R.MELDEPERIODE_ID AND R.STATUS = 'NY' " +
+                "JOIN PERSON P ON P.PERSON_ID = R.PERSON_ID " +
+                "WHERE P.FNR = :fnr " +
+                "ORDER BY MP.frist";
+
+        return namedParameterJdbcTemplate.query(
+                selectStatement,
+                new MapSqlParameterSource().addValue("fnr", fnr),
+                new MeldeperiodeRowMapper()
+        );
     }
 
     public Meldeperiode hent(long meldeperiodeId) {

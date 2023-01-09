@@ -1,6 +1,7 @@
 package no.nav.raptus.dprapp.api.v1;
 
 import lombok.extern.slf4j.Slf4j;
+import no.nav.raptus.dprapp.Utils;
 import no.nav.raptus.dprapp.db.entity.Meldeperiode;
 import no.nav.raptus.dprapp.db.repository.MeldeperioderDAO;
 import no.nav.raptus.dprapp.model.Data;
@@ -27,11 +28,11 @@ public class Meldeperioder {
     public ResponseEntity<List<Meldeperiode>> hentListe(
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization
     ) {
-        // Sjekk at bruker i token "eier" innsendte meldeperiode
         log.warn(authorization);
+        String fnr = Utils.getIdent(authorization);
 
         // Hent data
-        List<Meldeperiode> meldeperioder = meldeperioderDAO.hentListe();
+        List<Meldeperiode> meldeperioder = meldeperioderDAO.hentListe(fnr);
 
         // Svar
         return ResponseEntity.ok(meldeperioder);
@@ -42,7 +43,7 @@ public class Meldeperioder {
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
             @PathVariable long id
     ) {
-        // Sjekk at bruker i token "eier" innsendte meldeperiode
+        // Sjekk at bruker i token "eier" denne meldeperioden
 
         // Hent data
         Meldeperiode meldeperiode = meldeperioderDAO.hent(id);
@@ -56,7 +57,7 @@ public class Meldeperioder {
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
             @PathVariable long id
     ) {
-        // Sjekk at bruker i token "eier" innsendte meldeperiode
+        // Sjekk at bruker i token "eier" denne meldeperioden
 
         // Hent data
         String meldeperiode = meldeperioderDAO.hentMellomlagret(id);
@@ -70,7 +71,7 @@ public class Meldeperioder {
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
             @RequestBody Data data
     ) {
-        // Sjekk at bruker i token "eier" innsendte meldeperiode
+        // Sjekk at bruker i token "eier" denne meldeperioden
 
         // Lagre data
         meldeperioderDAO.lagre(data.getId(), data.toString()); // overriden data.toString() returns serialized object
@@ -84,7 +85,7 @@ public class Meldeperioder {
             @RequestHeader(value = AUTHORIZATION, required = false) String authorization,
             @RequestBody Data data
     ) {
-        // Sjekk at bruker i token "eier" innsendte meldeperiode
+        // Sjekk at bruker i token "eier" denne meldeperioden
 
         // Kontroller
 
