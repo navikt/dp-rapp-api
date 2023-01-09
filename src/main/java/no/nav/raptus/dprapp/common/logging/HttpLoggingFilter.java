@@ -1,9 +1,14 @@
 package no.nav.raptus.dprapp.common.logging;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import no.nav.raptus.dprapp.common.mdc.MdcOperations;
 import no.nav.raptus.dprapp.db.entity.KallLogg;
 import no.nav.raptus.dprapp.db.repository.KallLoggDAO;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,13 +16,11 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 import org.springframework.web.util.WebUtils;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static no.nav.raptus.dprapp.Utils.formatHeaders;
 
 /**
  * Servletfilter for logging av HTTP request- og response for tilbudte REST-tjenester til KALL_LOGG-tabellen.
@@ -40,15 +43,18 @@ import java.util.*;
 @Slf4j
 public class HttpLoggingFilter extends OncePerRequestFilter {
 
-    private KallLoggDAO kallLoggDAO;
+    private final KallLoggDAO kallLoggDAO;
 
     public HttpLoggingFilter(KallLoggDAO kallLoggDAO) {
         this.kallLoggDAO = kallLoggDAO;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            @NotNull HttpServletRequest request,
+            @NotNull HttpServletResponse response,
+            @NotNull FilterChain filterChain
+    ) throws ServletException, IOException {
 
         long startTime = System.currentTimeMillis();
 
@@ -190,26 +196,6 @@ public class HttpLoggingFilter extends OncePerRequestFilter {
             }
 
             builder.append(payload);
-        }
-    }
-
-    //
-    // Felles
-    //
-
-    private void formatHeaders(StringBuilder builder, HttpHeaders headers) {
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            builder.append(entry.getKey() + ": ");
-
-            List<String> values = entry.getValue();
-
-            for (int i = 0; i < values.size(); i++) {
-                if (i > 0) {
-                    builder.append(", ");
-                }
-                builder.append(values.get(i));
-            }
-            builder.append('\n');
         }
     }
 

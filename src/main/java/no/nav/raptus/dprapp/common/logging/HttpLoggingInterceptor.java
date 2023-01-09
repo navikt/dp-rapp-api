@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.nav.raptus.dprapp.common.mdc.MdcOperations;
 import no.nav.raptus.dprapp.db.entity.KallLogg;
 import no.nav.raptus.dprapp.db.repository.KallLoggDAO;
-import org.springframework.http.HttpHeaders;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -17,8 +17,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
+
+import static no.nav.raptus.dprapp.Utils.formatHeaders;
 
 /**
  * Spring ClientHttpRequestInterceptor for logging av HTTP request- og respons for konsumerte REST-tjenester til
@@ -46,9 +46,13 @@ public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
         this.kallLoggDAO = kallLoggDAO;
     }
 
+    @NotNull
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution)
-            throws IOException {
+    public ClientHttpResponse intercept(
+            @NotNull HttpRequest request,
+            @NotNull byte[] body,
+            ClientHttpRequestExecution execution
+    ) throws IOException {
         String formattedRequest = formatRequest(request, body);
 
         long startTime = System.currentTimeMillis();
@@ -70,9 +74,9 @@ public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
                     .tidspunkt(LocalDateTime.now()) //
                     .type(KallLogg.TYPE_REST) //
                     .retning(KallLogg.RETNING_UT) //
-                    .metode(request.getMethodValue()) //
+                    .metode(request.getMethod().name()) //
                     .path(request.getURI().getPath()) //
-                    .status((response != null) ? response.getRawStatusCode() : null) //
+                    .status((response != null) ? response.getStatusCode().value() : null) //
                     .kalltid(endTime - startTime) //
                     .request(formattedRequest) //
                     .response(formattedResponse) //
@@ -100,7 +104,7 @@ public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void formatMethodAndRequestURL(StringBuilder builder, HttpRequest request) {
-        builder.append(request.getMethodValue() + " " + request.getURI() + "\n");
+        builder.append(request.getMethod().name()).append(" ").append(request.getURI()).append("\n");
     }
 
     private void formatBody(StringBuilder builder, byte[] body) {
@@ -124,7 +128,7 @@ public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void formatStatus(StringBuilder builder, ClientHttpResponse response) throws IOException {
-        builder.append("HTTP " + response.getRawStatusCode() + " " + response.getStatusText() + "\n");
+        builder.append("HTTP ").append(response.getStatusCode().value()).append(" ").append(response.getStatusText()).append("\n");
     }
 
     private void formatBody(StringBuilder builder, ClientHttpResponse response) throws IOException {
@@ -147,22 +151,6 @@ public class HttpLoggingInterceptor implements ClientHttpRequestInterceptor {
     //
     // Felles
     //
-
-    private void formatHeaders(StringBuilder builder, HttpHeaders headers) {
-        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            builder.append(entry.getKey() + ": ");
-
-            List<String> values = entry.getValue();
-
-            for (int i = 0; i < values.size(); i++) {
-                if (i > 0) {
-                    builder.append(", ");
-                }
-                builder.append(values.get(i));
-            }
-            builder.append('\n');
-        }
-    }
 
     private void formatBody(StringBuilder builder, String body) {
         if (body.length() > 0) {

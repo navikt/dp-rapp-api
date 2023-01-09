@@ -4,6 +4,10 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 public class Utils {
@@ -55,5 +59,21 @@ public class Utils {
         }
 
         return null;
+    }
+
+    public static void formatHeaders(StringBuilder builder, HttpHeaders headers) {
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            builder.append(entry.getKey() + ": ");
+
+            List<String> values = entry.getValue();
+
+            for (int i = 0; i < values.size(); i++) {
+                if (i > 0) {
+                    builder.append(", ");
+                }
+                builder.append(values.get(i));
+            }
+            builder.append('\n');
+        }
     }
 }
