@@ -63,7 +63,7 @@ public class Utils {
 
     public static void formatHeaders(StringBuilder builder, HttpHeaders headers) {
         for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
-            builder.append(entry.getKey() + ": ");
+            builder.append(entry.getKey()).append(": ");
 
             List<String> values = entry.getValue();
 

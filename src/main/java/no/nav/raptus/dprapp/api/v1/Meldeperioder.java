@@ -60,7 +60,10 @@ public class Meldeperioder {
         // Sjekk at bruker i token "eier" denne meldeperioden
 
         // Hent data
-        String meldeperiode = meldeperioderDAO.hentMellomlagret(id);
+        // String meldeperiode = meldeperioderDAO.hentMellomlagret(id);
+        // TODO: rollback
+        long fnr = Long.parseLong(Utils.getIdent(authorization));
+        String meldeperiode = meldeperioderDAO.hentMellomlagret(fnr);
 
         // Svar
         return ResponseEntity.ok(meldeperiode);
@@ -74,7 +77,10 @@ public class Meldeperioder {
         // Sjekk at bruker i token "eier" denne meldeperioden
 
         // Lagre data
-        meldeperioderDAO.lagre(data.getId(), data.toString()); // overriden data.toString() returns serialized object
+        // meldeperioderDAO.lagre(data.getId(), data.toString()); // overriden data.toString() returns serialized object
+        // TODO: rollback
+        long fnr = Long.parseLong(Utils.getIdent(authorization));
+        meldeperioderDAO.lagre(fnr, data.toString());
 
         // Svar
         return ResponseEntity.ok().build();
@@ -90,7 +96,10 @@ public class Meldeperioder {
         // Kontroller
 
         // Slett mellomlagret meldeperiode
-        meldeperioderDAO.slett(data.getId());
+        // meldeperioderDAO.slett(data.getId());
+        // TODO: rollback
+        long fnr = Long.parseLong(Utils.getIdent(authorization));
+        meldeperioderDAO.slett(fnr);
 
         // Svar
         return ResponseEntity.ok().build();
