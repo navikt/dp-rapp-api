@@ -63,7 +63,6 @@ public class Meldeperioder {
         // String meldeperiode = meldeperioderDAO.hentMellomlagret(id);
         // TODO: rollback
         long fnr = Long.parseLong(Utils.getIdent(authorization));
-        log.warn("" + fnr);
         String meldeperiode = meldeperioderDAO.hentMellomlagret(fnr);
 
         // Svar
@@ -81,7 +80,7 @@ public class Meldeperioder {
         // meldeperioderDAO.lagre(data.getId(), data.toString()); // overriden data.toString() returns serialized object
         // TODO: rollback
         long fnr = Long.parseLong(Utils.getIdent(authorization));
-        log.warn("" + fnr);
+;
         meldeperioderDAO.lagre(fnr, data.toString());
 
         // Svar
