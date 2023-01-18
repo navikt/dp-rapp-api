@@ -80,7 +80,7 @@ public class Meldeperioder {
         // meldeperioderDAO.lagre(data.getId(), data.toString()); // overriden data.toString() returns serialized object
         // TODO: rollback
         long fnr = Long.parseLong(Utils.getIdent(authorization));
-;
+
         meldeperioderDAO.lagre(fnr, data.toString());
 
         // Svar

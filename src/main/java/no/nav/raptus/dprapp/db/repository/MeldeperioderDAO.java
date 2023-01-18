@@ -80,6 +80,13 @@ public class MeldeperioderDAO {
         try {
             NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
+            log.warn("INSERT INTO mellomlgagret_meldeperiode " +
+                    "( meldeperiode_id , data) " +
+                    "VALUES " +
+                    "( " + meldeperiodeId + " , " + data + ") " +
+                    "ON CONFLICT (meldeperiode_id) DO " +
+                    "UPDATE SET data = :data");
+
             String insertStatement = "INSERT INTO mellomlgagret_meldeperiode " +
                     "( meldeperiode_id , data) " +
                     "VALUES " +
