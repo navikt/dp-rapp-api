@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -17,7 +16,6 @@ import java.util.List;
 
 @Slf4j
 @Repository
-@Transactional
 public class MeldeperioderDAO {
 
     @Autowired
@@ -36,7 +34,7 @@ public class MeldeperioderDAO {
 
         return namedParameterJdbcTemplate.query(
                 selectStatement,
-                new MapSqlParameterSource().addValue("fnr", fnr),
+                new MapSqlParameterSource().addValue("fnr", fnr, Types.VARCHAR),
                 new MeldeperiodeRowMapper()
         );
     }
@@ -48,7 +46,7 @@ public class MeldeperioderDAO {
 
         List<Meldeperiode> result = namedParameterJdbcTemplate.query(
                 selectStatement,
-                new MapSqlParameterSource().addValue("meldeperiodeId", meldeperiodeId),
+                new MapSqlParameterSource().addValue("meldeperiodeId", meldeperiodeId, Types.BIGINT),
                 new MeldeperiodeRowMapper()
         );
 
@@ -66,7 +64,7 @@ public class MeldeperioderDAO {
 
         List<String> result = namedParameterJdbcTemplate.query(
                 selectStatement,
-                new MapSqlParameterSource().addValue("meldeperiodeId", meldeperiodeId),
+                new MapSqlParameterSource().addValue("meldeperiodeId", meldeperiodeId, Types.BIGINT),
                 new DataRowMapper()
         );
 
@@ -82,13 +80,6 @@ public class MeldeperioderDAO {
         try {
             NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
-            log.warn("INSERT INTO mellomlgagret_meldeperiode " +
-                    "( meldeperiode_id , data) " +
-                    "VALUES " +
-                    "( " + meldeperiodeId + " , " + data + ") " +
-                    "ON CONFLICT (meldeperiode_id) DO " +
-                    "UPDATE SET data = :data");
-
             String insertStatement = "INSERT INTO mellomlgagret_meldeperiode " +
                     "( meldeperiode_id , data) " +
                     "VALUES " +
@@ -97,7 +88,7 @@ public class MeldeperioderDAO {
                     "UPDATE SET data = :data";
 
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-            mapSqlParameterSource.addValue("meldeperiodeId", meldeperiodeId, Types.INTEGER);
+            mapSqlParameterSource.addValue("meldeperiodeId", meldeperiodeId, Types.BIGINT);
             mapSqlParameterSource.addValue("data", data, Types.VARCHAR);
 
             namedParameterJdbcTemplate.update(insertStatement, mapSqlParameterSource);
@@ -115,7 +106,7 @@ public class MeldeperioderDAO {
             String insertStatement = "DELETE FROM mellomlgagret_meldeperiode WHERE meldeperiode_id = :meldeperiodeId";
 
             MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource();
-            mapSqlParameterSource.addValue("meldeperiodeId", meldeperiodeId, Types.INTEGER);
+            mapSqlParameterSource.addValue("meldeperiodeId", meldeperiodeId, Types.BIGINT);
 
             namedParameterJdbcTemplate.update(insertStatement, mapSqlParameterSource);
 
